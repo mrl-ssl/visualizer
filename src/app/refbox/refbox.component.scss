@@ -1,0 +1,38 @@
+.blueTeam{
+    border: solid 1px blue;
+    border-radius: 50px;
+    background-color: rgba($color: #5c5b5b, $alpha: 1.0);
+  }
+  
+  .yellowTeam{
+    border: solid 1px yellow;
+    border-radius: 50px;
+    background-color: rgba($color: #5c5b5b, $alpha: 1.0);
+  }
+  
+  .globalCommand{
+    border: solid 1px black;
+    border-radius: 50px;
+    background-color: rgba($color: #5c5b5b, $alpha: 1.0);
+  }
+  
+  .blueTeam button{
+    margin: 8px;
+  }
+  
+  .yellowTeam button{
+    background-color: yellow;
+    margin: 8px;
+  }
+  
+  .globalCommand button{
+    background-color: green;
+    color: white;
+    margin: 8px;
+  }
+  
+  div{
+    margin:10px;
+    padding:30px;
+  }
+  

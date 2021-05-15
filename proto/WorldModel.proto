@@ -1,0 +1,109 @@
+syntax = "proto2";
+
+enum OccludeType {
+    Visible = 0;
+    MaybeOccluded = 1;
+    Occluded = 2;
+}
+
+//// BallObservationMeta.cs
+message BallObservationMeta {
+    optional VectorF2D OccludingOffset = 1;
+    required OccludeType Occluded = 2;
+    required int32 OccludingTeam = 3;
+    required int32 OccludingId = 4;
+}
+message RobotObservationMeta {
+}
+//
+//// Observation.cs
+message Observation {
+    required uint32 Camera = 1;
+    required float Confidence = 2;
+    optional VectorF2D Location = 3;
+    required float Angle = 4;
+}
+//
+//// ObservationMeta.cs
+message ObservationMeta {
+    optional Observation Vision = 1;
+    required int32 NotSeen = 2;
+    optional SingleObjectState ViewState = 3;
+    optional BallObservationMeta BallMeta = 4;
+    optional RobotObservationMeta RobotMeta = 5;
+}
+//
+//// ObservationModel.cs
+message ObservationModel {
+    map<int32,  ObservationMeta> OurRobots = 1;
+    map<int32,  ObservationMeta> Opponents = 2;
+    optional ObservationMeta Ball = 3;
+    repeated Observation OtherBalls = 4; 
+}
+//
+//// VectorF2D.cs
+message VectorF2D {
+    required float X = 1;
+    required float Y = 2;
+}
+//// SingleObjectState.cs
+message SingleObjectState {
+   optional VectorF2D location = 1;
+   optional VectorF2D speed = 2;
+   required float angle = 3;
+   required float angularSpeed = 4; 
+   required float stuck = 5;  
+   
+} 
+message SingleWirelessCommand{
+    required float Vx=1;
+    required float Vy=2;
+    required float W=3;
+}
+message RobotCommands{
+    map<int32,  SingleWirelessCommand> Commands = 1;
+}
+// // WorldModel.cs
+message WorldModel {
+    required bool OurMarkerIsYellow = 1;
+    required bool FieldIsInverted = 2;
+    optional int32 GoalieID = 3;
+    map<int32, SingleObjectState> OurRobots = 4;
+    map<int32, SingleObjectState> Opponents = 5;
+    optional SingleObjectState BallState = 6;
+    optional ObservationModel Observations = 7;
+    optional RobotCommands Commands = 8;
+}
+
+message FieldConfig {
+    required float BoundaryWidth = 1;
+    required float Thickness = 2;
+    required float CenterCircleRadius = 3;
+    optional VectorF2D OurLeftCorner = 4;
+    optional VectorF2D OurRightCorner = 5;
+    optional VectorF2D OppLeftCorner = 6;
+    optional VectorF2D OppRightCorner = 7;
+    optional VectorF2D OurGoalCenter = 8;
+    optional VectorF2D OurGoalRight = 9;
+    optional VectorF2D OurGoalLeft = 10;
+    optional VectorF2D OurGoalDepthRight = 11;
+    optional VectorF2D OurGoalDepthLeft = 12;
+    optional VectorF2D OurPenaltyBackRight = 13;
+    optional VectorF2D OurPenaltyBackLeft = 14;
+    optional VectorF2D OurPenaltyRearRight = 15;
+    optional VectorF2D OurPenaltyRearLeft = 16;
+    optional VectorF2D OppGoalCenter = 17;
+    optional VectorF2D OppGoalRight = 18;
+    optional VectorF2D OppGoalLeft = 19;
+    optional VectorF2D OppGoalDepthRight = 20;
+    optional VectorF2D OppGoalDepthLeft = 21;
+    optional VectorF2D OppPenaltyBackRight = 22;
+    optional VectorF2D OppPenaltyBackLeft = 23;
+    optional VectorF2D OppPenaltyRearRight = 24;
+    optional VectorF2D OppPenaltyRearLeft = 25;
+}
+
+message Packet {
+    optional WorldModel worldModel = 1;
+    optional FieldConfig fieldConfig = 2;
+}

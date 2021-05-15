@@ -1,0 +1,69 @@
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-item{
+    display: inline-block;
+    width: auto;
+    border: solid 5px black;
+    background-color: white;
+    margin: 10px;
+    padding: 5px;
+    align-self: stretch;
+}
+
+.radio-button{
+    display: block;
+    padding: 5px;
+}
+
+.tactic{
+    // background-image: url(../../assets/grass.jpg);
+    // background-position: center center;
+    // background-size: cover;
+    height: 20vh;
+    /* The blur effect */
+    // filter: blur(8px);
+    // -webkit-filter: blur(8px);
+}
+
+.fk-radio-button{
+    padding: 10px;
+}
+
+.fk-text{
+    margin: auto;
+    text-align: center;
+    margin: 10px;
+    background-color: white;
+    color: black;
+    border: 5px solid black;
+}
+
+.fk-title{
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+    color: white;
+    font-weight: bold;
+    // font-size: 15vmin;
+    position: absolute;
+    left: 0;
+    top: 64px;
+    margin: auto;
+    z-index: 2;
+    width: 100%;
+    height: 20vh;
+    text-align: center;
+}
+
+
+.submit-button{
+    display: block;
+    margin: 0px auto;
+    padding: 10px 20px;
+    background-color: green;
+    color: white;
+}

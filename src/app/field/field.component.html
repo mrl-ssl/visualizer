@@ -1,0 +1,78 @@
+<body class="bg-image">
+    <div class="flex-container">
+      <div>
+        <mat-slide-toggle ></mat-slide-toggle>
+            <mat-card class="card blue-team">
+              <mat-card-header>
+                <mat-card-title>Team Blue</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="button-container">
+                  <button mat-raised-button color="primary">Basic</button>
+                  <button mat-raised-button color="primary">Penalty</button>
+                  <button mat-raised-button color="primary">Indirect</button>
+                  <button mat-raised-button color="primary">Direct</button>
+                  <button mat-raised-button color="primary">Kick Off</button>
+                  <button mat-raised-button color="primary">Ball Palcement</button>
+              </div>
+              </mat-card-content>
+            </mat-card>
+            <mat-card class="card yellow-team">
+            <mat-card-header>
+              <mat-card-title>Team Yellow</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="button-container">
+                <button mat-raised-button>Basic</button>
+                <button mat-raised-button>Penalty</button>
+                <button mat-raised-button>Indirect</button>
+                <button mat-raised-button>Direct</button>
+                <button mat-raised-button>Kick Off</button>
+                <button mat-raised-button>Ball Palcement</button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="card global-command">
+            <mat-card-header>
+              <mat-card-title>Global Command</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="button-container">
+                <button mat-raised-button color="warn">Basic</button>
+                <button mat-raised-button color="warn">Penalty</button>
+                <button mat-raised-button color="warn">Indirect</button>
+                <button mat-raised-button color="warn">Direct</button>
+                <button mat-raised-button color="warn">Kick Off</button>
+                <button mat-raised-button color="warn">Ball Palcement</button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="card common">
+            <mat-card-header>
+              <mat-card-title>Common</mat-card-title>
+            </mat-card-header>
+             <mat-card-content>
+              <div class="button-container">
+                <h3>Receive Mode:</h3>
+                <mat-radio-group aria-label="Receive Mode:">
+                  <mat-radio-button class="radio-button" value="1">Vision</mat-radio-button>
+                  <mat-radio-button class="radio-button" value="2">Simulator</mat-radio-button>
+                </mat-radio-group>
+                <mat-form-field >
+                  <textarea matInput placeholder="Goalie ID"></textarea>
+                </mat-form-field>
+                <button mat-raised-button color="primary">Submit</button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+      </div>
+      <div>
+        <canvas class="center" #field width="700" height="900"></canvas>
+      </div>
+    </div>
+    <div class="flex-container">
+      <!-- <div id="chartContainer"></div> -->
+      <div class="terminalAngular"><ng-terminal #term></ng-terminal></div>
+    </div>
+  </body>
