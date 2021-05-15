@@ -5,7 +5,7 @@ import * as CanvasJS from './canvasjs.min';
 import { WebsocketService } from '../websocket.service';
 import { ChatService } from '../chat.service';
 import { WorldModel, Packet, FieldConfig } from '../../../proto/generated/WorldModel_pb';
-import * as config from '../../../../soccer/configs/field.json';
+import * as config from '../../../../configs/field.json';
 
 @Component({
   selector: 'app-field',
