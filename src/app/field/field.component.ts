@@ -5,6 +5,7 @@ import * as CanvasJS from './canvasjs.min';
 import { WebsocketService } from '../websocket.service';
 import { ChatService } from '../chat.service';
 import { WorldModel, Packet, FieldConfig } from '../../../proto/generated/WorldModel_pb';
+import { Referee } from '../../../proto/generated/Referee_pb';
 import * as config from '../../../../configs/field.json';
 
 @Component({
@@ -29,6 +30,7 @@ export class FieldComponent implements OnInit {
   globalK: number;
   model: WorldModel.AsObject;
   fieldConfig: FieldConfig.AsObject;
+  refereeCommand: Referee.AsObject;
   times: number[] = [];
   framerate: number;
   scale: number = 70;
@@ -60,6 +62,9 @@ export class FieldComponent implements OnInit {
       if (m.fieldconfig) {
         this.fieldConfig = m.fieldconfig;
         // console.log("Field Configs UPDATED");
+      }
+      if (m.refereecommandList.length > 0) {
+        this.refereeCommand = m.refereecommandList[m.refereecommandList.length-1].referee;
       }
       this.drawField();
       requestAnimationFrame(() => this.fps());
@@ -159,7 +164,12 @@ export class FieldComponent implements OnInit {
     // Write FPS
     this.fieldContext.font = "20px Arial";
     this.fieldContext.fillStyle = '#000000';
-    this.fieldContext.fillText("FPS : " + this.framerate, 5, 20);
+    this.fieldContext.fillText("FPS : " + this.framerate, 35, 20);
+    // Write Model Status
+    this.fieldContext.fillText(this.calculate_model_status(this.model.status), 225, 20);
+    // Write Referee Status
+    if (this.refereeCommand)
+      this.fieldContext.fillText(this.calculate_referee_command(this.refereeCommand.command), 475, 20);
 
     this.fieldContext.save();
     this.fieldContext.translate(this.globalX, this.globalY);
@@ -402,6 +412,89 @@ export class FieldComponent implements OnInit {
     return ((this.FW * this.scale) * ((y - (-4.5)) / (4.5 - (-4.5))))
   }
 
+  calculate_model_status(st) {
+    if (st == 0)
+      return "Halt";
+    else if (st == 1)
+      return "Stop";
+    else if (st == 2)
+      return "Normal";
+    else if (st == 3)
+      return "KickOffOurTeamWaiting";
+    else if (st == 4)
+      return "KickOffOurTeamGo";
+    else if (st == 5)
+      return "KickOffOpponentWaiting";
+    else if (st == 6)
+      return "KickOffOpponentGo";
+    else if (st == 7)
+      return "PenaltyOurTeamWaiting";
+    else if (st == 8)
+      return "PenaltyOurTeamGo";
+    else if (st == 9)
+      return "PenaltyOpponentWaiting";    
+    else if (st == 10)
+      return "PenaltyOpponentGo";
+    else if (st == 11)
+      return "DirectFreeKickOurTeam";
+    else if (st == 12)
+      return "DirectFreeKickOpponent";
+    else if (st == 13)
+      return "IndirectFreeKickOurTeam";
+    else if (st == 14)
+      return "IndirectFreeKickOpponent";
+    else if (st == 15)
+      return "TimeoutOurTeam";
+    else if (st == 16)
+      return "TimeoutOpponent";
+    else if (st == 17)
+      return "BallPlaceOurTeam";
+    else if (st == 18)
+      return "BallPlaceOpponent";
+    else
+      return 'Error';
+  }
+
+  calculate_referee_command(st) {
+    if (st == 0)
+      return "HALT";
+    else if (st == 1)
+      return "STOP";
+    else if (st == 2)
+      return "NORMAL_START";
+    else if (st == 3)
+      return "FORCE_START";
+    else if (st == 4)
+      return "PREPARE_KICKOFF_YELLOW";
+    else if (st == 5)
+      return "PREPARE_KICKOFF_BLUE";
+    else if (st == 6)
+      return "PREPARE_PENALTY_YELLOW";
+    else if (st == 7)
+      return "PREPARE_PENALTY_BLUE";
+    else if (st == 8)
+      return "DIRECT_FREE_YELLOW";
+    else if (st == 9)
+      return "DIRECT_FREE_BLUE";    
+    else if (st == 10)
+      return "INDIRECT_FREE_YELLOW";
+    else if (st == 11)
+      return "INDIRECT_FREE_BLUE";
+    else if (st == 12)
+      return "TIMEOUT_YELLOW";
+    else if (st == 13)
+      return "TIMEOUT_BLUE";
+    else if (st == 14)
+      return "GOAL_YELLOW";
+    else if (st == 15)
+      return "GOAL_BLUE";
+    else if (st == 16)
+      return "BALL_PLACEMENT_YELLOW";
+    else if (st == 17)
+      return "BALL_PLACEMENT_BLUE";
+    else
+      return 'Error';
+  }
   alignment() {
     this.fieldConfig = {
       boundarywidth: config.boundaryWidth,

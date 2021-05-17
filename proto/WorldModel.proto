@@ -1,5 +1,8 @@
 syntax = "proto2";
 
+import "Common.proto";
+import "Referee.proto";
+
 enum OccludeType {
     Visible = 0;
     MaybeOccluded = 1;
@@ -41,11 +44,7 @@ message ObservationModel {
     repeated Observation OtherBalls = 4; 
 }
 //
-//// VectorF2D.cs
-message VectorF2D {
-    required float X = 1;
-    required float Y = 2;
-}
+
 //// SingleObjectState.cs
 message SingleObjectState {
    optional VectorF2D location = 1;
@@ -63,6 +62,31 @@ message SingleWirelessCommand{
 message RobotCommands{
     map<int32,  SingleWirelessCommand> Commands = 1;
 }
+
+// Game Status
+enum GameStatus
+{
+    Halt = 0;
+    Stop = 1;
+    Normal = 2;
+    KickOffOurTeamWaiting = 3;
+    KickOffOurTeamGo = 4;
+    KickOffOpponentWaiting = 5;
+    KickOffOpponentGo = 6;
+    PenaltyOurTeamWaiting = 7;
+    PenaltyOurTeamGo = 8;
+    PenaltyOpponentWaiting = 9;
+    PenaltyOpponentGo = 10;
+    DirectFreeKickOurTeam = 11;
+    DirectFreeKickOpponent = 12;
+    IndirectFreeKickOurTeam = 13;
+    IndirectFreeKickOpponent = 14;
+    TimeoutOurTeam = 15;
+    TimeoutOpponent = 16;
+    BallPlaceOurTeam = 17;
+    BallPlaceOpponent = 18;
+}
+
 // // WorldModel.cs
 message WorldModel {
     required bool OurMarkerIsYellow = 1;
@@ -73,6 +97,8 @@ message WorldModel {
     optional SingleObjectState BallState = 6;
     optional ObservationModel Observations = 7;
     optional RobotCommands Commands = 8;
+    required GameStatus Status = 9;
+    optional uint32 OppGoalieID = 10;
 }
 
 message FieldConfig {
@@ -103,7 +129,21 @@ message FieldConfig {
     optional VectorF2D OppPenaltyRearLeft = 25;
 }
 
+// Referee Command
+enum RefereeSourceType {
+    Unknown = 0;
+    Refbox = 1;
+    CommandLine = 2;
+    Visualizer = 3;
+}
+
+message RefereeCommand {
+    required RefereeSourceType Source = 1;
+    optional Referee referee = 2;
+}
+
 message Packet {
     optional WorldModel worldModel = 1;
     optional FieldConfig fieldConfig = 2;
+    repeated RefereeCommand refereeCommand = 3;
 }

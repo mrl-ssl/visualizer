@@ -1,0 +1,440 @@
+syntax = "proto2";
+
+import "Common.proto";
+
+enum Team {
+    UNKNOWN = 0;
+    YELLOW = 1;
+    BLUE = 2;
+}
+
+message RobotId {
+    optional uint32 id = 1;
+    optional Team team = 2;
+}
+
+enum Division {
+    DIV_UNKNOWN = 0;
+    DIV_A = 1;
+    DIV_B = 2;
+}
+
+message GameEvent {
+    optional Type type = 40;
+    repeated string origin = 41;
+    oneof event {
+        BallLeftField ball_left_field_touch_line = 6;
+        BallLeftField ball_left_field_goal_line = 7;
+        AimlessKick aimless_kick = 11;
+        AttackerTooCloseToDefenseArea attacker_too_close_to_defense_area = 19;
+        DefenderInDefenseArea defender_in_defense_area = 31;
+        BoundaryCrossing boundary_crossing = 43;
+        KeeperHeldBall keeper_held_ball = 13;
+        BotDribbledBallTooFar bot_dribbled_ball_too_far = 17;
+        BotPushedBot bot_pushed_bot = 24;
+        BotHeldBallDeliberately bot_held_ball_deliberately = 26;
+        BotTippedOver bot_tipped_over = 27;
+        AttackerTouchedBallInDefenseArea attacker_touched_ball_in_defense_area = 15;
+        BotKickedBallTooFast bot_kicked_ball_too_fast = 18;
+        BotCrashUnique bot_crash_unique = 22;
+        BotCrashDrawn bot_crash_drawn = 21;
+        DefenderTooCloseToKickPoint defender_too_close_to_kick_point = 29;
+        BotTooFastInStop bot_too_fast_in_stop = 28;
+        BotInterferedPlacement bot_interfered_placement = 20;
+        Goal possible_goal = 39;
+        Goal goal = 8;
+        Goal invalid_goal = 44;
+        AttackerDoubleTouchedBall attacker_double_touched_ball = 14;
+        PlacementSucceeded placement_succeeded = 5;
+        PenaltyKickFailed penalty_kick_failed = 45;
+        NoProgressInGame no_progress_in_game = 2;
+        PlacementFailed placement_failed = 3;
+        MultipleCards multiple_cards = 32;
+        MultipleFouls multiple_fouls = 34;
+        BotSubstitution bot_substitution = 37;
+        TooManyRobots too_many_robots = 38;
+        ChallengeFlag challenge_flag = 46;
+        EmergencyStop emergency_stop = 47;
+        UnsportingBehaviorMinor unsporting_behavior_minor = 35;
+        UnsportingBehaviorMajor unsporting_behavior_major = 36;
+        Prepared prepared = 1 [deprecated = true];
+        IndirectGoal indirect_goal = 9 [deprecated = true];
+        ChippedGoal chipped_goal = 10 [deprecated = true];
+        KickTimeout kick_timeout = 12 [deprecated = true];
+        AttackerTouchedOpponentInDefenseArea attacker_touched_opponent_in_defense_area = 16 [deprecated = true];
+        AttackerTouchedOpponentInDefenseArea attacker_touched_opponent_in_defense_area_skipped = 42 [deprecated = true];
+        BotCrashUnique bot_crash_unique_skipped = 23 [deprecated = true];
+        BotPushedBot bot_pushed_bot_skipped = 25 [deprecated = true];
+        DefenderInDefenseAreaPartially defender_in_defense_area_partially = 30 [deprecated = true];
+        MultiplePlacementFailures multiple_placement_failures = 33 [deprecated = true];
+    }
+
+    message BallLeftField {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+    }
+
+    message AimlessKick {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+        optional VectorF2D kick_location = 4;
+    }
+
+    message Goal {
+        required Team by_team = 1;
+        optional Team kicking_team = 6;
+        optional uint32 kicking_bot = 2;
+        optional VectorF2D location = 3;
+        optional VectorF2D kick_location = 4;
+        optional float max_ball_height = 5;
+        optional uint32 num_robots_by_team = 7;
+        optional uint64 last_touch_by_team = 8;
+        optional string message = 9;
+    }
+
+    message IndirectGoal {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+        optional VectorF2D kick_location = 4;
+    }
+
+    message ChippedGoal {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+        optional VectorF2D kick_location = 4;
+        optional float max_ball_height = 5;
+    }
+
+    message BotTooFastInStop {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+        optional float speed = 4;
+    }
+
+    message DefenderTooCloseToKickPoint {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+        optional float distance = 4;
+    }
+
+    message BotCrashDrawn {
+        optional uint32 bot_yellow = 1;
+        optional uint32 bot_blue = 2;
+        optional VectorF2D location = 3;
+        optional float crash_speed = 4;
+        optional float speed_diff = 5;
+        optional float crash_angle = 6;
+    }
+
+    message BotCrashUnique {
+        required Team by_team = 1;
+        optional uint32 violator = 2;
+        optional uint32 victim = 3;
+        optional VectorF2D location = 4;
+        optional float crash_speed = 5;
+        optional float speed_diff = 6;
+        optional float crash_angle = 7;
+    }
+
+    message BotPushedBot {
+        required Team by_team = 1;
+        optional uint32 violator = 2;
+        optional uint32 victim = 3;
+        optional VectorF2D location = 4;
+        optional float pushed_distance = 5;
+    }
+
+    message BotTippedOver {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+        optional VectorF2D ball_location = 4;
+    }
+
+    message DefenderInDefenseArea {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+        optional float distance = 4;
+    }
+
+    message DefenderInDefenseAreaPartially {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+        optional float distance = 4;
+        optional VectorF2D ball_location = 5;
+    }
+
+    message AttackerTouchedBallInDefenseArea {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+        optional float distance = 4;
+    }
+
+    message BotKickedBallTooFast {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+        optional float initial_ball_speed = 4;
+        optional bool chipped = 5;
+    }
+
+    message BotDribbledBallTooFar {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D start = 3;
+        optional VectorF2D end = 4;
+    }
+
+    message AttackerTouchedOpponentInDefenseArea {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional uint32 victim = 4;
+        optional VectorF2D location = 3;
+    }
+
+    message AttackerDoubleTouchedBall {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+    }
+
+    message AttackerTooCloseToDefenseArea {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+        optional float distance = 4;
+        optional VectorF2D ball_location = 5;
+    }
+
+    message BotHeldBallDeliberately {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+        optional float duration = 4;
+    }
+
+    message BotInterferedPlacement {
+        required Team by_team = 1;
+        optional uint32 by_bot = 2;
+        optional VectorF2D location = 3;
+    }
+
+    message MultipleCards {
+        required Team by_team = 1;
+    }
+
+    message MultipleFouls {
+        required Team by_team = 1;
+    }
+
+    message MultiplePlacementFailures {
+        required Team by_team = 1;
+    }
+
+    message KickTimeout {
+        required Team by_team = 1;
+        optional VectorF2D location = 2;
+        optional float time = 3;
+    }
+
+    message NoProgressInGame {
+        optional VectorF2D location = 1;
+        optional float time = 2;
+    }
+
+    message PlacementFailed {
+        required Team by_team = 1;
+        optional float remaining_distance = 2;
+    }
+
+    message UnsportingBehaviorMinor {
+        required Team by_team = 1;
+        required string reason = 2;
+    }
+
+    message UnsportingBehaviorMajor {
+        required Team by_team = 1;
+        required string reason = 2;
+    }
+
+    message KeeperHeldBall {
+        required Team by_team = 1;
+        optional VectorF2D location = 2;
+        optional float duration = 3;
+    }
+
+    message PlacementSucceeded {
+        required Team by_team = 1;
+        optional float time_taken = 2;
+        optional float precision = 3;
+        optional float distance = 4;
+    }
+
+    message Prepared {
+        optional float time_taken = 1;
+    }
+
+    message BotSubstitution {
+        required Team by_team = 1;
+    }
+
+    message ChallengeFlag {
+        required Team by_team = 1;
+    }
+
+    message EmergencyStop {
+        required Team by_team = 1;
+    }
+
+    message TooManyRobots {
+        required Team by_team = 1;
+        optional int32 num_robots_allowed = 2;
+        optional int32 num_robots_on_field = 3;
+        optional VectorF2D ball_location = 4;
+    }
+
+    message BoundaryCrossing {
+        required Team by_team = 1;
+        optional VectorF2D location = 2;
+    }
+
+    message PenaltyKickFailed {
+        required Team by_team = 1;
+        optional VectorF2D location = 2;
+    }
+
+    enum Type {
+        UNKNOWN_GAME_EVENT_TYPE = 0;
+        BALL_LEFT_FIELD_TOUCH_LINE = 6; // triggered by autoRef
+        BALL_LEFT_FIELD_GOAL_LINE = 7; // triggered by autoRef
+        AIMLESS_KICK = 11; // triggered by autoRef
+        ATTACKER_TOO_CLOSE_TO_DEFENSE_AREA = 19; // triggered by autoRef
+        DEFENDER_IN_DEFENSE_AREA = 31; // triggered by autoRef
+        BOUNDARY_CROSSING = 41; // triggered by autoRef
+        KEEPER_HELD_BALL = 13; // triggered by GC
+        BOT_DRIBBLED_BALL_TOO_FAR = 17; // triggered by autoRef
+        BOT_PUSHED_BOT = 24; // triggered by human ref
+        BOT_HELD_BALL_DELIBERATELY = 26; // triggered by human ref
+        BOT_TIPPED_OVER = 27; // triggered by human ref
+        ATTACKER_TOUCHED_BALL_IN_DEFENSE_AREA = 15; // triggered by autoRef
+        BOT_KICKED_BALL_TOO_FAST = 18; // triggered by autoRef
+        BOT_CRASH_UNIQUE = 22; // triggered by autoRef
+        BOT_CRASH_DRAWN = 21; // triggered by autoRef
+        DEFENDER_TOO_CLOSE_TO_KICK_POINT = 29; // triggered by autoRef
+        BOT_TOO_FAST_IN_STOP = 28; // triggered by autoRef
+        BOT_INTERFERED_PLACEMENT = 20; // triggered by autoRef
+        POSSIBLE_GOAL = 39; // triggered by autoRef
+        GOAL = 8; // triggered by GC
+        INVALID_GOAL = 42; // triggered by GC
+        ATTACKER_DOUBLE_TOUCHED_BALL = 14; // triggered by autoRef
+        PLACEMENT_SUCCEEDED = 5; // triggered by autoRef
+        PENALTY_KICK_FAILED = 43; // triggered by GC and autoRef
+        NO_PROGRESS_IN_GAME = 2; // triggered by GC
+        PLACEMENT_FAILED = 3; // triggered by GC
+        MULTIPLE_CARDS = 32; // triggered by GC
+        MULTIPLE_FOULS = 34; // triggered by GC
+        BOT_SUBSTITUTION = 37; // triggered by GC
+        TOO_MANY_ROBOTS = 38; // triggered by GC
+        CHALLENGE_FLAG = 44; // triggered by GC
+        EMERGENCY_STOP = 45; // triggered by GC
+        UNSPORTING_BEHAVIOR_MINOR = 35; // triggered by human ref
+        UNSPORTING_BEHAVIOR_MAJOR = 36; // triggered by human ref
+        PREPARED = 1 [deprecated = true];
+        INDIRECT_GOAL = 9 [deprecated = true];
+        CHIPPED_GOAL = 10 [deprecated = true];
+        KICK_TIMEOUT = 12 [deprecated = true];
+        ATTACKER_TOUCHED_OPPONENT_IN_DEFENSE_AREA = 16 [deprecated = true];
+        ATTACKER_TOUCHED_OPPONENT_IN_DEFENSE_AREA_SKIPPED = 40 [deprecated = true];
+        BOT_CRASH_UNIQUE_SKIPPED = 23 [deprecated = true];
+        BOT_PUSHED_BOT_SKIPPED = 25 [deprecated = true];
+        DEFENDER_IN_DEFENSE_AREA_PARTIALLY = 30 [deprecated = true];
+        MULTIPLE_PLACEMENT_FAILURES = 33 [deprecated = true];
+    }
+}
+
+// Each UDP packet contains one of these messages.
+message Referee {
+    required uint64 packet_timestamp = 1;
+    enum Stage {
+        NORMAL_FIRST_HALF_PRE = 0;
+        NORMAL_FIRST_HALF = 1;
+        NORMAL_HALF_TIME = 2;
+        NORMAL_SECOND_HALF_PRE = 3;
+        NORMAL_SECOND_HALF = 4;
+        EXTRA_TIME_BREAK = 5;
+        EXTRA_FIRST_HALF_PRE = 6;
+        EXTRA_FIRST_HALF = 7;
+        EXTRA_HALF_TIME = 8;
+        EXTRA_SECOND_HALF_PRE = 9;
+        EXTRA_SECOND_HALF = 10;
+        PENALTY_SHOOTOUT_BREAK = 11;
+        PENALTY_SHOOTOUT = 12;
+        POST_GAME = 13;
+    }
+    required Stage stage = 2;
+    optional sint32 stage_time_left = 3;
+    enum Command {
+        HALT = 0;
+        STOP = 1;
+        NORMAL_START = 2;
+        FORCE_START = 3;
+        PREPARE_KICKOFF_YELLOW = 4;
+        PREPARE_KICKOFF_BLUE = 5;
+        PREPARE_PENALTY_YELLOW = 6;
+        PREPARE_PENALTY_BLUE = 7;
+        DIRECT_FREE_YELLOW = 8;
+        DIRECT_FREE_BLUE = 9;
+        INDIRECT_FREE_YELLOW = 10;
+        INDIRECT_FREE_BLUE = 11;
+        TIMEOUT_YELLOW = 12;
+        TIMEOUT_BLUE = 13;
+        GOAL_YELLOW = 14 [deprecated = true];
+        GOAL_BLUE = 15 [deprecated = true];
+        BALL_PLACEMENT_YELLOW = 16;
+        BALL_PLACEMENT_BLUE = 17;
+    }
+    required Command command = 4;
+    required uint32 command_counter = 5;
+    required uint64 command_timestamp = 6;
+    message TeamInfo {
+        required string name = 1;
+        required uint32 score = 2;
+        required uint32 red_cards = 3;
+        repeated uint32 yellow_card_times = 4 [packed = true];
+        required uint32 yellow_cards = 5;
+        required uint32 timeouts = 6;
+        required uint32 timeout_time = 7;
+        required uint32 goalkeeper = 8;
+        optional uint32 foul_counter = 9;
+        optional uint32 ball_placement_failures = 10;
+        optional bool can_place_ball = 12;
+        optional uint32 max_allowed_bots = 13;
+        optional bool bot_substitution_intent = 14;
+        optional bool ball_placement_failures_reached = 15;
+    }
+    required TeamInfo yellow = 7;
+    required TeamInfo blue = 8;
+    optional VectorF2D designated_position = 9;
+    optional bool blue_team_on_positive_half = 10;
+    reserved 11;
+    optional Command next_command = 12;
+    reserved 13;
+    repeated GameEvent game_events = 16;
+    reserved 14;
+    repeated GameEventProposalGroup game_event_proposals = 17;
+    optional int32 current_action_time_remaining = 15;
+}
+
+message GameEventProposalGroup {
+    repeated GameEvent game_event = 1;
+    optional bool accepted = 2;
+}
