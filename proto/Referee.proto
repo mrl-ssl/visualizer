@@ -405,11 +405,12 @@ message Referee {
     required Command command = 4;
     required uint32 command_counter = 5;
     required uint64 command_timestamp = 6;
+    // TODO: Remove packed = true
     message TeamInfo {
         required string name = 1;
         required uint32 score = 2;
         required uint32 red_cards = 3;
-        repeated uint32 yellow_card_times = 4 [packed = true];
+        repeated uint32 yellow_card_times = 4;
         required uint32 yellow_cards = 5;
         required uint32 timeouts = 6;
         required uint32 timeout_time = 7;

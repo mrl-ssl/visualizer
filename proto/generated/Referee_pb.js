@@ -12745,8 +12745,8 @@ proto.Referee.TeamInfo.deserializeBinaryFromReader = function(msg, reader) {
       msg.setRedCards(value);
       break;
     case 4:
-      var value = /** @type {!Array<number>} */ (reader.readPackedUint32());
-      msg.setYellowCardTimesList(value);
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.addYellowCardTimes(value);
       break;
     case 5:
       var value = /** @type {number} */ (reader.readUint32());
@@ -12840,7 +12840,7 @@ proto.Referee.TeamInfo.serializeBinaryToWriter = function(message, writer) {
   }
   f = message.getYellowCardTimesList();
   if (f.length > 0) {
-    writer.writePackedUint32(
+    writer.writeRepeatedUint32(
       4,
       f
     );
