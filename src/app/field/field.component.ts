@@ -6,6 +6,7 @@ import { WebsocketService } from '../websocket.service';
 import { ChatService } from '../chat.service';
 import { WorldModel, Packet, FieldConfig } from '../../../proto/generated/WorldModel_pb';
 import { Referee } from '../../../proto/generated/Referee_pb';
+import { DrawableObject } from '../../../proto/generated/DrawableObject_pb';
 import * as config from '../../../../configs/field.json';
 
 @Component({
@@ -31,6 +32,7 @@ export class FieldComponent implements OnInit {
   model: WorldModel.AsObject;
   fieldConfig: FieldConfig.AsObject;
   refereeCommand: Referee.AsObject;
+  drawableObject: DrawableObject.AsObject[];
   times: number[] = [];
   framerate: number;
   scale: number = 70;
@@ -65,6 +67,12 @@ export class FieldComponent implements OnInit {
       }
       if (m.refereecommandList.length > 0) {
         this.refereeCommand = m.refereecommandList[m.refereecommandList.length-1].referee;
+      }
+
+      if (m.drawableobjectList.length > 0 && m.drawableobjectList)
+      {
+        this.drawableObject = m.drawableobjectList;
+        // console.log(this.drawableObject)
       }
       this.drawField();
       requestAnimationFrame(() => this.fps());
@@ -174,6 +182,10 @@ export class FieldComponent implements OnInit {
     this.fieldContext.save();
     this.fieldContext.translate(this.globalX, this.globalY);
     this.fieldContext.scale(this.globalK, this.globalK);
+
+    // Draw AI Objects
+    if (this.drawableObject)
+      this.drawObjects();
     
     // Field Boundary
     let x1 = this.scale_x(this.fieldConfig.ourleftcorner.x);
@@ -404,6 +416,103 @@ export class FieldComponent implements OnInit {
     this.fieldContext.stroke();
   }
 
+  drawObjects() {
+    for (let i=0; i<this.drawableObject.length; i++) {
+      let type = this.drawableObject[i].type;
+      if (type == 0) {
+        let CO = {x: this.drawableObject[i].circle.position.x,
+                  y: this.drawableObject[i].circle.position.y,
+                  r: this.drawableObject[i].circle.radius,
+                  c: this.drawableObject[i].strokecolor,
+                  fc: this.drawableObject[i].fillcolor,
+                  t: this.drawableObject[i].strokewidth};
+        // console.log(CO)
+        this.drawCircle(CO);
+      }
+      else if (type == 1) {
+        let LO = { p: [{x: this.drawableObject[i].line.head.x,
+                      y: this.drawableObject[i].line.head.y },
+                      {x: this.drawableObject[i].line.tail.x,
+                      y: this.drawableObject[i].line.tail.y}],
+                   c: this.drawableObject[i].strokecolor,
+                   t: this.drawableObject[i].strokewidth};
+        this.drawLines(LO);
+      }
+      else if (type == 2) {
+        let SO = {  p: {x: this.drawableObject[i].string.position.x,
+                        y: this.drawableObject[i].string.position.y},
+                    c: this.drawableObject[i].strokecolor,
+                    s: this.drawableObject[i].fontsize,
+                    t: this.drawableObject[i].string.text};
+        this.drawString(SO);
+      }
+      else if (type == 3) {
+
+      }
+      else if (type == 4) {
+        // TODO: cant repeat in oneof
+        // let RO = {p: this.drawableObject[i].region}
+      }
+    }
+    // let CO = {x: 1, y:-1, r:0.1, c:"red", fc:undefined, t:0.02};
+    // this.drawCircle(CO);
+
+    // let PO = {p: [{x: 0, y:0}, {x: 1, y:1}, {x: 1.2, y:1.6}, {x:-1, y:2}],
+    //           c:"purple", t:0.01, r:true, fc:"black"}
+    // this.drawLines(PO);
+    
+    // let SO = {p: {x: -4, y:-4}, s: "20", c:"blue", t:"HELOOO OOPS"};
+    // this.drawString(SO);
+  }
+
+  drawCircle(CO) {
+    CO.x = this.scale_x(CO.x);
+    CO.y = this.scale_y(CO.y);
+    this.fieldContext.beginPath();
+    this.fieldContext.lineWidth = CO.t * this.scale;
+    this.fieldContext.strokeStyle = CO.c;
+    this.fieldContext.arc(
+      CO.y + this.padding,
+      CO.x + this.padding,
+      CO.r * this.scale,
+      0,
+      2 * Math.PI
+    );
+    if (CO.fc) {
+      this.fieldContext.fillStyle = "#"+CO.fc;
+      this.fieldContext.fill();
+    }
+    this.fieldContext.stroke();
+  }
+
+  drawLines(PO) {
+    // Draw line and path and regions
+    this.fieldContext.beginPath();
+    this.fieldContext.lineWidth = PO.t * this.scale;
+    this.fieldContext.strokeStyle = PO.c;
+    for (let i=0; i < PO.p.length; i++) {
+      PO.p[i].x = this.scale_x(PO.p[i].x);
+      PO.p[i].y = this.scale_y(PO.p[i].y);
+    }
+    this.fieldContext.moveTo(PO.p[0].y + this.padding, PO.p[0].x + this.padding);
+    for (let i=1; i < PO.p.length; i++) 
+      this.fieldContext.lineTo(PO.p[i].y + this.padding, PO.p[i].x + this.padding);
+    if (PO.r) {
+      this.fieldContext.lineTo(PO.p[0].y + this.padding, PO.p[0].x + this.padding);
+      this.fieldContext.fillStyle = PO.fc;
+      this.fieldContext.fill();
+    }
+    this.fieldContext.stroke();
+  }
+
+  drawString(SO) {
+    SO.p.x = this.scale_x(SO.p.x);
+    SO.p.y = this.scale_y(SO.p.y);
+    this.fieldContext.font = SO.s + "px" + " Arial";
+    this.fieldContext.fillStyle = SO.c;
+    this.fieldContext.fillText(SO.t, SO.p.y, SO.p.x);
+  }
+
   scale_x(x) {
     return ((this.FH * this.scale) * ((x - (-6)) / (6 - (-6))))
   }
@@ -495,6 +604,7 @@ export class FieldComponent implements OnInit {
     else
       return 'Error';
   }
+
   alignment() {
     this.fieldConfig = {
       boundarywidth: config.boundaryWidth,

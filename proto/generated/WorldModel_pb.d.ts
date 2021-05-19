@@ -4,6 +4,7 @@
 import * as jspb from "google-protobuf";
 import * as Common_pb from "./Common_pb";
 import * as Referee_pb from "./Referee_pb";
+import * as DrawableObject_pb from "./DrawableObject_pb";
 
 export class BallObservationMeta extends jspb.Message {
   hasOccludingoffset(): boolean;
@@ -560,6 +561,11 @@ export class Packet extends jspb.Message {
   setRefereecommandList(value: Array<RefereeCommand>): void;
   addRefereecommand(value?: RefereeCommand, index?: number): RefereeCommand;
 
+  clearDrawableobjectList(): void;
+  getDrawableobjectList(): Array<DrawableObject_pb.DrawableObject>;
+  setDrawableobjectList(value: Array<DrawableObject_pb.DrawableObject>): void;
+  addDrawableobject(value?: DrawableObject_pb.DrawableObject, index?: number): DrawableObject_pb.DrawableObject;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Packet.AsObject;
   static toObject(includeInstance: boolean, msg: Packet): Packet.AsObject;
@@ -575,6 +581,7 @@ export namespace Packet {
     worldmodel?: WorldModel.AsObject,
     fieldconfig?: FieldConfig.AsObject,
     refereecommandList: Array<RefereeCommand.AsObject>,
+    drawableobjectList: Array<DrawableObject_pb.DrawableObject.AsObject>,
   }
 }
 

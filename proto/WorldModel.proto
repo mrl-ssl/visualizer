@@ -2,6 +2,7 @@ syntax = "proto2";
 
 import "Common.proto";
 import "Referee.proto";
+import "DrawableObject.proto";
 
 enum OccludeType {
     Visible = 0;
@@ -146,4 +147,5 @@ message Packet {
     optional WorldModel worldModel = 1;
     optional FieldConfig fieldConfig = 2;
     repeated RefereeCommand refereeCommand = 3;
+    repeated DrawableObject drawableObject = 4;
 }

@@ -13,6 +13,7 @@ var global = Function('return this')();
 
 var Common_pb = require('./Common_pb.js');
 var Referee_pb = require('./Referee_pb.js');
+var DrawableObject_pb = require('./DrawableObject_pb.js');
 goog.exportSymbol('proto.BallObservationMeta', null, global);
 goog.exportSymbol('proto.FieldConfig', null, global);
 goog.exportSymbol('proto.GameStatus', null, global);
@@ -3961,7 +3962,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.Packet.repeatedFields_ = [3];
+proto.Packet.repeatedFields_ = [3,4];
 
 
 
@@ -3995,7 +3996,9 @@ proto.Packet.toObject = function(includeInstance, msg) {
     worldmodel: (f = msg.getWorldmodel()) && proto.WorldModel.toObject(includeInstance, f),
     fieldconfig: (f = msg.getFieldconfig()) && proto.FieldConfig.toObject(includeInstance, f),
     refereecommandList: jspb.Message.toObjectList(msg.getRefereecommandList(),
-    proto.RefereeCommand.toObject, includeInstance)
+    proto.RefereeCommand.toObject, includeInstance),
+    drawableobjectList: jspb.Message.toObjectList(msg.getDrawableobjectList(),
+    DrawableObject_pb.DrawableObject.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -4046,6 +4049,11 @@ proto.Packet.deserializeBinaryFromReader = function(msg, reader) {
       var value = new proto.RefereeCommand;
       reader.readMessage(value,proto.RefereeCommand.deserializeBinaryFromReader);
       msg.addRefereecommand(value);
+      break;
+    case 4:
+      var value = new DrawableObject_pb.DrawableObject;
+      reader.readMessage(value,DrawableObject_pb.DrawableObject.deserializeBinaryFromReader);
+      msg.addDrawableobject(value);
       break;
     default:
       reader.skipField();
@@ -4098,6 +4106,14 @@ proto.Packet.serializeBinaryToWriter = function(message, writer) {
       3,
       f,
       proto.RefereeCommand.serializeBinaryToWriter
+    );
+  }
+  f = message.getDrawableobjectList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      4,
+      f,
+      DrawableObject_pb.DrawableObject.serializeBinaryToWriter
     );
   }
 };
@@ -4191,6 +4207,37 @@ proto.Packet.prototype.addRefereecommand = function(opt_value, opt_index) {
 
 proto.Packet.prototype.clearRefereecommandList = function() {
   this.setRefereecommandList([]);
+};
+
+
+/**
+ * repeated DrawableObject drawableObject = 4;
+ * @return {!Array<!proto.DrawableObject>}
+ */
+proto.Packet.prototype.getDrawableobjectList = function() {
+  return /** @type{!Array<!proto.DrawableObject>} */ (
+    jspb.Message.getRepeatedWrapperField(this, DrawableObject_pb.DrawableObject, 4));
+};
+
+
+/** @param {!Array<!proto.DrawableObject>} value */
+proto.Packet.prototype.setDrawableobjectList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 4, value);
+};
+
+
+/**
+ * @param {!proto.DrawableObject=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.DrawableObject}
+ */
+proto.Packet.prototype.addDrawableobject = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.DrawableObject, opt_index);
+};
+
+
+proto.Packet.prototype.clearDrawableobjectList = function() {
+  this.setDrawableobjectList([]);
 };
 
 
