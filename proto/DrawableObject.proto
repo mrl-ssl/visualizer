@@ -1,0 +1,44 @@
+syntax = "proto2";
+
+import "Common.proto";
+
+enum DrawableType
+{
+    CIRCLE = 0;
+    LINE = 1;
+    STRING = 2;
+    PATH = 3;
+    REGION = 4;
+}
+
+message DrawableString {
+    required VectorF2D Position = 1;
+    required string Text = 2;
+}
+
+message Line {
+    required VectorF2D Head = 1;
+    required VectorF2D Tail = 2;
+}
+
+message Circle {
+    required VectorF2D Position = 1;
+    required float Radius = 2;
+}
+
+message DrawableObject {
+    required string StrokeColor = 1;
+    optional string FillColor = 2;
+    required float StrokeWidth = 3;
+    optional string FontSize = 4;
+    required bool Fill = 5;
+    required float Opacity = 6;
+    required DrawableType Type = 7;
+    oneof event {
+        Circle Circle = 8;
+        VectorF2D Region = 9;
+        VectorF2D Path = 10;
+        Line Line = 11;
+        DrawableString String = 12;
+    }
+}
