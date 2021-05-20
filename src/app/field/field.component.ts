@@ -39,7 +39,7 @@ export class FieldComponent implements OnInit {
   FW: number = 9;
   FH: number = 12;
   padding: number = 35;
-
+  printed:boolean = false;
   constructor(private chatService: ChatService) { }
 
   ngOnInit(): void {
@@ -114,7 +114,11 @@ export class FieldComponent implements OnInit {
     this.framerate = this.times.length;
 
   }
-
+  argb2rgbaString(c){
+    if(!c) return "";
+    return "#" + (((c & 0x00FFFFFF) << 8 |
+    (c & 0xFF000000) >>> 24) >>> 0).toString(16).padStart(8, '0');
+  }
   findObject(x, y) {
     // Our Robots
     for (var _i = 0; _i < this.model.ourrobotsMap.length; _i++) {
@@ -419,39 +423,52 @@ export class FieldComponent implements OnInit {
   drawObjects() {
     for (let i=0; i<this.drawableObject.length; i++) {
       let type = this.drawableObject[i].type;
+      const {strokecolor, fillcolor} = this.drawableObject[i];
+      const c = this.argb2rgbaString(strokecolor);
+      const fc = this.argb2rgbaString(fillcolor);
       if (type == 0) {
         let CO = {x: this.drawableObject[i].circle.position.x,
                   y: this.drawableObject[i].circle.position.y,
                   r: this.drawableObject[i].circle.radius,
-                  c: this.drawableObject[i].strokecolor,
-                  fc: this.drawableObject[i].fillcolor,
+                  c,
+                  fc,
                   t: this.drawableObject[i].strokewidth};
         // console.log(CO)
         this.drawCircle(CO);
       }
       else if (type == 1) {
-        let LO = { p: [{x: this.drawableObject[i].line.head.x,
-                      y: this.drawableObject[i].line.head.y },
-                      {x: this.drawableObject[i].line.tail.x,
-                      y: this.drawableObject[i].line.tail.y}],
-                   c: this.drawableObject[i].strokecolor,
-                   t: this.drawableObject[i].strokewidth};
+        let LO = { p: [this.drawableObject[i].line.head,
+                      this.drawableObject[i].line.tail],
+                      c, 
+                      t: this.drawableObject[i].strokewidth};
         this.drawLines(LO);
+        // console.log(LO);
       }
       else if (type == 2) {
         let SO = {  p: {x: this.drawableObject[i].string.position.x,
                         y: this.drawableObject[i].string.position.y},
-                    c: this.drawableObject[i].strokecolor,
+                        c, 
                     s: this.drawableObject[i].fontsize,
                     t: this.drawableObject[i].string.text};
         this.drawString(SO);
       }
       else if (type == 3) {
-
+        // nothing yet
       }
       else if (type == 4) {
-        // TODO: cant repeat in oneof
-        // let RO = {p: this.drawableObject[i].region}
+        let positions = [];
+        for (let j=0; j<this.drawableObject[i].region.positionsList.length; j++) {
+          positions[j] = { x: this.drawableObject[i].region.positionsList[j].x,
+                           y: this.drawableObject[i].region.positionsList[j].y}
+        }
+        // console.log(positions);
+        let RO = { p: positions, 
+                   t: this.drawableObject[i].strokewidth,
+                   r: true,
+                   c,
+                  fc};
+        this.drawLines(RO);
+        // console.log(RO.p.length);
       }
     }
     // let CO = {x: 1, y:-1, r:0.1, c:"red", fc:undefined, t:0.02};
@@ -479,7 +496,9 @@ export class FieldComponent implements OnInit {
       2 * Math.PI
     );
     if (CO.fc) {
-      this.fieldContext.fillStyle = "#"+CO.fc;
+      
+      this.fieldContext.fillStyle = CO.fc;
+      // console.log("#" + CO.fc.toString(16).padStart(6, '0'));
       this.fieldContext.fill();
     }
     this.fieldContext.stroke();
@@ -489,7 +508,7 @@ export class FieldComponent implements OnInit {
     // Draw line and path and regions
     this.fieldContext.beginPath();
     this.fieldContext.lineWidth = PO.t * this.scale;
-    this.fieldContext.strokeStyle = PO.c;
+    this.fieldContext.strokeStyle = String(PO.c);
     for (let i=0; i < PO.p.length; i++) {
       PO.p[i].x = this.scale_x(PO.p[i].x);
       PO.p[i].y = this.scale_y(PO.p[i].y);
@@ -499,8 +518,10 @@ export class FieldComponent implements OnInit {
       this.fieldContext.lineTo(PO.p[i].y + this.padding, PO.p[i].x + this.padding);
     if (PO.r) {
       this.fieldContext.lineTo(PO.p[0].y + this.padding, PO.p[0].x + this.padding);
-      this.fieldContext.fillStyle = PO.fc;
-      this.fieldContext.fill();
+      if (PO.fc) {
+        this.fieldContext.fillStyle = PO.fc;
+        this.fieldContext.fill();
+      }
     }
     this.fieldContext.stroke();
   }

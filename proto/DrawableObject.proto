@@ -26,19 +26,21 @@ message Circle {
     required float Radius = 2;
 }
 
+message Region {
+    repeated VectorF2D Positions = 1;
+}
+
 message DrawableObject {
-    required string StrokeColor = 1;
-    optional string FillColor = 2;
+    required uint32 StrokeColor = 1;
+    optional uint32 FillColor = 2;
     required float StrokeWidth = 3;
-    optional string FontSize = 4;
-    required bool Fill = 5;
-    required float Opacity = 6;
-    required DrawableType Type = 7;
+    optional int32 FontSize = 4;
+    required DrawableType Type = 5;
     oneof event {
-        Circle Circle = 8;
-        VectorF2D Region = 9;
-        VectorF2D Path = 10;
-        Line Line = 11;
-        DrawableString String = 12;
+        Circle circle = 6;
+        Region region = 7;
+        VectorF2D path = 8;
+        Line line = 9;
+        DrawableString string = 10;
     }
 }

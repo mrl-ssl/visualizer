@@ -88,16 +88,38 @@ export namespace Circle {
   }
 }
 
+export class Region extends jspb.Message {
+  clearPositionsList(): void;
+  getPositionsList(): Array<Common_pb.VectorF2D>;
+  setPositionsList(value: Array<Common_pb.VectorF2D>): void;
+  addPositions(value?: Common_pb.VectorF2D, index?: number): Common_pb.VectorF2D;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Region.AsObject;
+  static toObject(includeInstance: boolean, msg: Region): Region.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: Region, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Region;
+  static deserializeBinaryFromReader(message: Region, reader: jspb.BinaryReader): Region;
+}
+
+export namespace Region {
+  export type AsObject = {
+    positionsList: Array<Common_pb.VectorF2D.AsObject>,
+  }
+}
+
 export class DrawableObject extends jspb.Message {
   hasStrokecolor(): boolean;
   clearStrokecolor(): void;
-  getStrokecolor(): string | undefined;
-  setStrokecolor(value: string): void;
+  getStrokecolor(): number | undefined;
+  setStrokecolor(value: number): void;
 
   hasFillcolor(): boolean;
   clearFillcolor(): void;
-  getFillcolor(): string | undefined;
-  setFillcolor(value: string): void;
+  getFillcolor(): number | undefined;
+  setFillcolor(value: number): void;
 
   hasStrokewidth(): boolean;
   clearStrokewidth(): void;
@@ -106,18 +128,8 @@ export class DrawableObject extends jspb.Message {
 
   hasFontsize(): boolean;
   clearFontsize(): void;
-  getFontsize(): string | undefined;
-  setFontsize(value: string): void;
-
-  hasFill(): boolean;
-  clearFill(): void;
-  getFill(): boolean | undefined;
-  setFill(value: boolean): void;
-
-  hasOpacity(): boolean;
-  clearOpacity(): void;
-  getOpacity(): number | undefined;
-  setOpacity(value: number): void;
+  getFontsize(): number | undefined;
+  setFontsize(value: number): void;
 
   hasType(): boolean;
   clearType(): void;
@@ -131,8 +143,8 @@ export class DrawableObject extends jspb.Message {
 
   hasRegion(): boolean;
   clearRegion(): void;
-  getRegion(): Common_pb.VectorF2D | undefined;
-  setRegion(value?: Common_pb.VectorF2D): void;
+  getRegion(): Region | undefined;
+  setRegion(value?: Region): void;
 
   hasPath(): boolean;
   clearPath(): void;
@@ -162,15 +174,13 @@ export class DrawableObject extends jspb.Message {
 
 export namespace DrawableObject {
   export type AsObject = {
-    strokecolor?: string,
-    fillcolor?: string,
+    strokecolor?: number,
+    fillcolor?: number,
     strokewidth?: number,
-    fontsize?: string,
-    fill?: boolean,
-    opacity?: number,
+    fontsize?: number,
     type?: DrawableTypeMap[keyof DrawableTypeMap],
     circle?: Circle.AsObject,
-    region?: Common_pb.VectorF2D.AsObject,
+    region?: Region.AsObject,
     path?: Common_pb.VectorF2D.AsObject,
     line?: Line.AsObject,
     string?: DrawableString.AsObject,
@@ -178,11 +188,11 @@ export namespace DrawableObject {
 
   export enum EventCase {
     EVENT_NOT_SET = 0,
-    CIRCLE = 8,
-    REGION = 9,
-    PATH = 10,
-    LINE = 11,
-    STRING = 12,
+    CIRCLE = 6,
+    REGION = 7,
+    PATH = 8,
+    LINE = 9,
+    STRING = 10,
   }
 }
 
