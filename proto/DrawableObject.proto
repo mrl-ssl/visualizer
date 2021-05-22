@@ -39,7 +39,7 @@ message DrawableObject {
     oneof event {
         Circle circle = 6;
         Region region = 7;
-        VectorF2D path = 8;
+        Region path = 8;
         Line line = 9;
         DrawableString string = 10;
     }

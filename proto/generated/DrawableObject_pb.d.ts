@@ -148,8 +148,8 @@ export class DrawableObject extends jspb.Message {
 
   hasPath(): boolean;
   clearPath(): void;
-  getPath(): Common_pb.VectorF2D | undefined;
-  setPath(value?: Common_pb.VectorF2D): void;
+  getPath(): Region | undefined;
+  setPath(value?: Region): void;
 
   hasLine(): boolean;
   clearLine(): void;
@@ -181,7 +181,7 @@ export namespace DrawableObject {
     type?: DrawableTypeMap[keyof DrawableTypeMap],
     circle?: Circle.AsObject,
     region?: Region.AsObject,
-    path?: Common_pb.VectorF2D.AsObject,
+    path?: Region.AsObject,
     line?: Line.AsObject,
     string?: DrawableString.AsObject,
   }

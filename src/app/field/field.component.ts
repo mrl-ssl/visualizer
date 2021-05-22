@@ -458,6 +458,12 @@ export class FieldComponent implements OnInit {
       }
       else if (type == 3) {
         // Path
+        let PO = {
+          p: this.drawableObject[i].path.positionsList,
+          t: this.drawableObject[i].strokewidth,
+          c
+        };
+        this.drawLines(PO);
       }
       else if (type == 4) {
         // Region

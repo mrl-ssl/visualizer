@@ -872,7 +872,7 @@ proto.DrawableObject.toObject = function(includeInstance, msg) {
     type: jspb.Message.getField(msg, 5),
     circle: (f = msg.getCircle()) && proto.Circle.toObject(includeInstance, f),
     region: (f = msg.getRegion()) && proto.Region.toObject(includeInstance, f),
-    path: (f = msg.getPath()) && Common_pb.VectorF2D.toObject(includeInstance, f),
+    path: (f = msg.getPath()) && proto.Region.toObject(includeInstance, f),
     line: (f = msg.getLine()) && proto.Line.toObject(includeInstance, f),
     string: (f = msg.getString()) && proto.DrawableString.toObject(includeInstance, f)
   };
@@ -942,8 +942,8 @@ proto.DrawableObject.deserializeBinaryFromReader = function(msg, reader) {
       msg.setRegion(value);
       break;
     case 8:
-      var value = new Common_pb.VectorF2D;
-      reader.readMessage(value,Common_pb.VectorF2D.deserializeBinaryFromReader);
+      var value = new proto.Region;
+      reader.readMessage(value,proto.Region.deserializeBinaryFromReader);
       msg.setPath(value);
       break;
     case 9:
@@ -1041,7 +1041,7 @@ proto.DrawableObject.serializeBinaryToWriter = function(message, writer) {
     writer.writeMessage(
       8,
       f,
-      Common_pb.VectorF2D.serializeBinaryToWriter
+      proto.Region.serializeBinaryToWriter
     );
   }
   f = message.getLine();
@@ -1269,16 +1269,16 @@ proto.DrawableObject.prototype.hasRegion = function() {
 
 
 /**
- * optional VectorF2D path = 8;
- * @return {?proto.VectorF2D}
+ * optional Region path = 8;
+ * @return {?proto.Region}
  */
 proto.DrawableObject.prototype.getPath = function() {
-  return /** @type{?proto.VectorF2D} */ (
-    jspb.Message.getWrapperField(this, Common_pb.VectorF2D, 8));
+  return /** @type{?proto.Region} */ (
+    jspb.Message.getWrapperField(this, proto.Region, 8));
 };
 
 
-/** @param {?proto.VectorF2D|undefined} value */
+/** @param {?proto.Region|undefined} value */
 proto.DrawableObject.prototype.setPath = function(value) {
   jspb.Message.setOneofWrapperField(this, 8, proto.DrawableObject.oneofGroups_[0], value);
 };
