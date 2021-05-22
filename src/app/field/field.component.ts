@@ -39,7 +39,7 @@ export class FieldComponent implements OnInit {
   FW: number = 9;
   FH: number = 12;
   padding: number = 35;
-  printed:boolean = false;
+  printed: boolean = false;
   constructor(private chatService: ChatService) { }
 
   ngOnInit(): void {
@@ -63,16 +63,13 @@ export class FieldComponent implements OnInit {
 
       if (m.fieldconfig) {
         this.fieldConfig = m.fieldconfig;
-        // console.log("Field Configs UPDATED");
       }
       if (m.refereecommandList.length > 0) {
-        this.refereeCommand = m.refereecommandList[m.refereecommandList.length-1].referee;
+        this.refereeCommand = m.refereecommandList[m.refereecommandList.length - 1].referee;
       }
 
-      if (m.drawableobjectList.length > 0 && m.drawableobjectList)
-      {
+      if (m.drawableobjectList.length > 0 && m.drawableobjectList) {
         this.drawableObject = m.drawableobjectList;
-        // console.log(this.drawableObject)
       }
       this.drawField();
       requestAnimationFrame(() => this.fps());
@@ -114,46 +111,48 @@ export class FieldComponent implements OnInit {
     this.framerate = this.times.length;
 
   }
-  argb2rgbaString(c){
-    if(!c) return "";
+
+  argb2rgbaString(c) {
+    if (!c) return "";
     return "#" + (((c & 0x00FFFFFF) << 8 |
-    (c & 0xFF000000) >>> 24) >>> 0).toString(16).padStart(8, '0');
+      (c & 0xFF000000) >>> 24) >>> 0).toString(16).padStart(8, '0');
   }
+
   findObject(x, y) {
     // Our Robots
     for (var _i = 0; _i < this.model.ourrobotsMap.length; _i++) {
-        let XR = this.model.ourrobotsMap[_i][1].location.x/1000;
-        let YR = this.model.ourrobotsMap[_i][1].location.y/1000;
-        XR = this.scale_x(XR) + this.padding;
-        YR = this.scale_y(YR) + this.padding;
-        let dist = Math.sqrt(Math.pow(y-XR, 2) + Math.pow(x-YR, 2));
-        if (dist < 0.13*this.scale) {
-          console.log("our : " + this.model.ourrobotsMap[_i][0]);
-          break;
-        }
-    }
-    
-    // Opponents Robots
-    for (var _i = 0; _i < this.model.opponentsMap.length; _i++) {
-        let XR = this.model.opponentsMap[_i][1].location.x/1000;
-        let YR = this.model.opponentsMap[_i][1].location.y/1000;
-        XR = this.scale_x(XR) + this.padding;
-        YR = this.scale_y(YR) + this.padding;
-        let dist = Math.sqrt(Math.pow(y-XR, 2) + Math.pow(x-YR, 2));
-        if (dist < 0.13*this.scale) {
-          console.log("opp : " + this.model.opponentsMap[_i][0]);
-          break;
-        }
-    }
-    
-    // Draw Ball
-    if (this.model.ballstate.location.x != undefined || this.model.ballstate.location.y != undefined) {
-      let XR = this.model.ballstate.location.x/1000;
-      let YR = this.model.ballstate.location.y/1000;
+      let XR = this.model.ourrobotsMap[_i][1].location.x / 1000;
+      let YR = this.model.ourrobotsMap[_i][1].location.y / 1000;
       XR = this.scale_x(XR) + this.padding;
       YR = this.scale_y(YR) + this.padding;
-      let dist = Math.sqrt(Math.pow(y-XR, 2) + Math.pow(x-YR, 2));
-      if (dist < 0.03*this.scale) {
+      let dist = Math.sqrt(Math.pow(y - XR, 2) + Math.pow(x - YR, 2));
+      if (dist < 0.13 * this.scale) {
+        console.log("our : " + this.model.ourrobotsMap[_i][0]);
+        break;
+      }
+    }
+
+    // Opponents Robots
+    for (var _i = 0; _i < this.model.opponentsMap.length; _i++) {
+      let XR = this.model.opponentsMap[_i][1].location.x / 1000;
+      let YR = this.model.opponentsMap[_i][1].location.y / 1000;
+      XR = this.scale_x(XR) + this.padding;
+      YR = this.scale_y(YR) + this.padding;
+      let dist = Math.sqrt(Math.pow(y - XR, 2) + Math.pow(x - YR, 2));
+      if (dist < 0.13 * this.scale) {
+        console.log("opp : " + this.model.opponentsMap[_i][0]);
+        break;
+      }
+    }
+
+    // Draw Ball
+    if (this.model.ballstate.location.x != undefined || this.model.ballstate.location.y != undefined) {
+      let XR = this.model.ballstate.location.x / 1000;
+      let YR = this.model.ballstate.location.y / 1000;
+      XR = this.scale_x(XR) + this.padding;
+      YR = this.scale_y(YR) + this.padding;
+      let dist = Math.sqrt(Math.pow(y - XR, 2) + Math.pow(x - YR, 2));
+      if (dist < 0.03 * this.scale) {
         console.log("ball");
         return;
       }
@@ -190,7 +189,7 @@ export class FieldComponent implements OnInit {
     // Draw AI Objects
     if (this.drawableObject)
       this.drawObjects();
-    
+
     // Field Boundary
     let x1 = this.scale_x(this.fieldConfig.ourleftcorner.x);
     let y1 = this.scale_y(this.fieldConfig.ourleftcorner.y);
@@ -209,12 +208,12 @@ export class FieldComponent implements OnInit {
     this.fieldContext.lineTo(y4 + this.padding, x4 + this.padding);
     this.fieldContext.lineTo(y1 + this.padding, x1 + this.padding);
     this.fieldContext.stroke();
-    
+
     // Middle Line
-    let mid_x_1 = (x1+x4)/2;
-    let mid_y_1 = (y1+y4)/2;
-    let mid_x_2 = (x2+x3)/2;
-    let mid_y_2 = (y2+y3)/2;
+    let mid_x_1 = (x1 + x4) / 2;
+    let mid_y_1 = (y1 + y4) / 2;
+    let mid_x_2 = (x2 + x3) / 2;
+    let mid_y_2 = (y2 + y3) / 2;
     this.fieldContext.beginPath();
     this.fieldContext.lineWidth = this.fieldConfig.thickness * this.scale;
     this.fieldContext.strokeStyle = 'white';
@@ -223,8 +222,8 @@ export class FieldComponent implements OnInit {
     this.fieldContext.stroke();
 
     // Middle Circle
-    let center_x = (mid_x_1 + mid_x_2)/2;
-    let center_y = (mid_y_1 + mid_y_2)/2;
+    let center_x = (mid_x_1 + mid_x_2) / 2;
+    let center_y = (mid_y_1 + mid_y_2) / 2;
     let circle_radius = this.fieldConfig.centercircleradius;
     this.fieldContext.beginPath();
     this.fieldContext.lineWidth = this.fieldConfig.thickness * this.scale;
@@ -349,27 +348,27 @@ export class FieldComponent implements OnInit {
   }
 
   drawBall(x, y) {
-      let newX = this.scale_x(x/1000)
-      let newY = this.scale_y(y/1000)
-      this.fieldContext.beginPath();
-      this.fieldContext.lineWidth = this.fieldConfig.thickness * this.scale;
-      this.fieldContext.strokeStyle = 'red';
-      this.fieldContext.arc(
-        newY + this.padding,
-        newX + this.padding,
-        0.03 * this.scale,
-        0,
-        2 * Math.PI
-      );
-      this.fieldContext.fillStyle = '#ffa500';
-      this.fieldContext.fill();
-      this.fieldContext.stroke();
+    let newX = this.scale_x(x / 1000)
+    let newY = this.scale_y(y / 1000)
+    this.fieldContext.beginPath();
+    this.fieldContext.lineWidth = this.fieldConfig.thickness * this.scale;
+    this.fieldContext.strokeStyle = 'red';
+    this.fieldContext.arc(
+      newY + this.padding,
+      newX + this.padding,
+      0.03 * this.scale,
+      0,
+      2 * Math.PI
+    );
+    this.fieldContext.fillStyle = '#ffa500';
+    this.fieldContext.fill();
+    this.fieldContext.stroke();
   }
 
   drawRobot(id, color, rotateAngle, x, y) {
     var angle = rotateAngle - Math.PI / 2;
-    x = this.scale_x(x/1000)
-    y = this.scale_y(y/1000)
+    x = this.scale_x(x / 1000)
+    y = this.scale_y(y / 1000)
 
     this.fieldContext.beginPath();
     this.fieldContext.lineWidth = this.fieldConfig.thickness * this.scale;
@@ -383,7 +382,7 @@ export class FieldComponent implements OnInit {
     this.fieldContext.arc(
       y + this.padding,
       x + this.padding,
-      0.13*this.scale,
+      0.13 * this.scale,
       -angle - (Math.PI / 4.0),
       Math.PI - angle + (Math.PI / 4.0),
       false
@@ -409,10 +408,10 @@ export class FieldComponent implements OnInit {
     }
     this.fieldContext.stroke();
 
-    let y1 = y + this.padding + (0.13*this.scale) * Math.cos(-angle - Math.PI / 4);
-    let x1 = x + this.padding + (0.13*this.scale) * Math.sin(-angle - Math.PI / 4);
-    let y2 = y + this.padding + (0.13*this.scale) * Math.cos(Math.PI - angle + Math.PI / 4);
-    let x2 = x + this.padding + (0.13*this.scale) * Math.sin(Math.PI - angle + Math.PI / 4);
+    let y1 = y + this.padding + (0.13 * this.scale) * Math.cos(-angle - Math.PI / 4);
+    let x1 = x + this.padding + (0.13 * this.scale) * Math.sin(-angle - Math.PI / 4);
+    let y2 = y + this.padding + (0.13 * this.scale) * Math.cos(Math.PI - angle + Math.PI / 4);
+    let x2 = x + this.padding + (0.13 * this.scale) * Math.sin(Math.PI - angle + Math.PI / 4);
     this.fieldContext.beginPath();
     this.fieldContext.lineCap = 'butt';
     this.fieldContext.moveTo(y1, x1);
@@ -421,84 +420,74 @@ export class FieldComponent implements OnInit {
   }
 
   drawObjects() {
-    for (let i=0; i<this.drawableObject.length; i++) {
+    for (let i = 0; i < this.drawableObject.length; i++) {
       let type = this.drawableObject[i].type;
-      const {strokecolor, fillcolor} = this.drawableObject[i];
+      const { strokecolor, fillcolor } = this.drawableObject[i];
       const c = this.argb2rgbaString(strokecolor);
       const fc = this.argb2rgbaString(fillcolor);
       if (type == 0) {
-        let CO = {x: this.drawableObject[i].circle.position.x,
-                  y: this.drawableObject[i].circle.position.y,
-                  r: this.drawableObject[i].circle.radius,
-                  c,
-                  fc,
-                  t: this.drawableObject[i].strokewidth};
-        // console.log(CO)
+        // Ciricle
+        let CO = {
+          p: this.drawableObject[i].circle.position,
+          r: this.drawableObject[i].circle.radius,
+          c,
+          fc,
+          t: this.drawableObject[i].strokewidth
+        };
         this.drawCircle(CO);
       }
       else if (type == 1) {
-        let LO = { p: [this.drawableObject[i].line.head,
-                      this.drawableObject[i].line.tail],
-                      c, 
-                      t: this.drawableObject[i].strokewidth};
+        // Line
+        let LO = {
+          p: [this.drawableObject[i].line.head,
+          this.drawableObject[i].line.tail],
+          c,
+          t: this.drawableObject[i].strokewidth
+        };
         this.drawLines(LO);
-        // console.log(LO);
       }
       else if (type == 2) {
-        let SO = {  p: {x: this.drawableObject[i].string.position.x,
-                        y: this.drawableObject[i].string.position.y},
-                        c, 
-                    s: this.drawableObject[i].fontsize,
-                    t: this.drawableObject[i].string.text};
+        // String
+        let SO = {
+          p: this.drawableObject[i].string.position,
+          c,
+          s: this.drawableObject[i].fontsize,
+          t: this.drawableObject[i].string.text
+        };
         this.drawString(SO);
       }
       else if (type == 3) {
-        // nothing yet
+        // Path
       }
       else if (type == 4) {
-        let positions = [];
-        for (let j=0; j<this.drawableObject[i].region.positionsList.length; j++) {
-          positions[j] = { x: this.drawableObject[i].region.positionsList[j].x,
-                           y: this.drawableObject[i].region.positionsList[j].y}
-        }
-        // console.log(positions);
-        let RO = { p: positions, 
-                   t: this.drawableObject[i].strokewidth,
-                   r: true,
-                   c,
-                  fc};
+        // Region
+        let RO = {
+          p: this.drawableObject[i].region.positionsList,
+          t: this.drawableObject[i].strokewidth,
+          r: true,
+          c,
+          fc
+        };
         this.drawLines(RO);
-        // console.log(RO.p.length);
       }
     }
-    // let CO = {x: 1, y:-1, r:0.1, c:"red", fc:undefined, t:0.02};
-    // this.drawCircle(CO);
-
-    // let PO = {p: [{x: 0, y:0}, {x: 1, y:1}, {x: 1.2, y:1.6}, {x:-1, y:2}],
-    //           c:"purple", t:0.01, r:true, fc:"black"}
-    // this.drawLines(PO);
-    
-    // let SO = {p: {x: -4, y:-4}, s: "20", c:"blue", t:"HELOOO OOPS"};
-    // this.drawString(SO);
   }
 
   drawCircle(CO) {
-    CO.x = this.scale_x(CO.x);
-    CO.y = this.scale_y(CO.y);
+    CO.p.x = this.scale_x(CO.p.x);
+    CO.p.y = this.scale_y(CO.p.y);
     this.fieldContext.beginPath();
     this.fieldContext.lineWidth = CO.t * this.scale;
     this.fieldContext.strokeStyle = CO.c;
     this.fieldContext.arc(
-      CO.y + this.padding,
-      CO.x + this.padding,
+      CO.p.y + this.padding,
+      CO.p.x + this.padding,
       CO.r * this.scale,
       0,
       2 * Math.PI
     );
     if (CO.fc) {
-      
       this.fieldContext.fillStyle = CO.fc;
-      // console.log("#" + CO.fc.toString(16).padStart(6, '0'));
       this.fieldContext.fill();
     }
     this.fieldContext.stroke();
@@ -508,13 +497,13 @@ export class FieldComponent implements OnInit {
     // Draw line and path and regions
     this.fieldContext.beginPath();
     this.fieldContext.lineWidth = PO.t * this.scale;
-    this.fieldContext.strokeStyle = String(PO.c);
-    for (let i=0; i < PO.p.length; i++) {
+    this.fieldContext.strokeStyle = PO.c;
+    for (let i = 0; i < PO.p.length; i++) {
       PO.p[i].x = this.scale_x(PO.p[i].x);
       PO.p[i].y = this.scale_y(PO.p[i].y);
     }
     this.fieldContext.moveTo(PO.p[0].y + this.padding, PO.p[0].x + this.padding);
-    for (let i=1; i < PO.p.length; i++) 
+    for (let i = 1; i < PO.p.length; i++)
       this.fieldContext.lineTo(PO.p[i].y + this.padding, PO.p[i].x + this.padding);
     if (PO.r) {
       this.fieldContext.lineTo(PO.p[0].y + this.padding, PO.p[0].x + this.padding);
@@ -562,7 +551,7 @@ export class FieldComponent implements OnInit {
     else if (st == 8)
       return "PenaltyOurTeamGo";
     else if (st == 9)
-      return "PenaltyOpponentWaiting";    
+      return "PenaltyOpponentWaiting";
     else if (st == 10)
       return "PenaltyOpponentGo";
     else if (st == 11)
@@ -605,7 +594,7 @@ export class FieldComponent implements OnInit {
     else if (st == 8)
       return "DIRECT_FREE_YELLOW";
     else if (st == 9)
-      return "DIRECT_FREE_BLUE";    
+      return "DIRECT_FREE_BLUE";
     else if (st == 10)
       return "INDIRECT_FREE_YELLOW";
     else if (st == 11)
