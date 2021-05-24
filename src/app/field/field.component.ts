@@ -121,8 +121,8 @@ export class FieldComponent implements OnInit {
   findObject(x, y) {
     // Our Robots
     for (var _i = 0; _i < this.model.ourrobotsMap.length; _i++) {
-      let XR = this.model.ourrobotsMap[_i][1].location.x / 1000;
-      let YR = this.model.ourrobotsMap[_i][1].location.y / 1000;
+      let XR = this.model.ourrobotsMap[_i][1].location.x;
+      let YR = this.model.ourrobotsMap[_i][1].location.y;
       XR = this.scale_x(XR) + this.padding;
       YR = this.scale_y(YR) + this.padding;
       let dist = Math.sqrt(Math.pow(y - XR, 2) + Math.pow(x - YR, 2));
@@ -134,8 +134,8 @@ export class FieldComponent implements OnInit {
 
     // Opponents Robots
     for (var _i = 0; _i < this.model.opponentsMap.length; _i++) {
-      let XR = this.model.opponentsMap[_i][1].location.x / 1000;
-      let YR = this.model.opponentsMap[_i][1].location.y / 1000;
+      let XR = this.model.opponentsMap[_i][1].location.x;
+      let YR = this.model.opponentsMap[_i][1].location.y;
       XR = this.scale_x(XR) + this.padding;
       YR = this.scale_y(YR) + this.padding;
       let dist = Math.sqrt(Math.pow(y - XR, 2) + Math.pow(x - YR, 2));
@@ -147,8 +147,8 @@ export class FieldComponent implements OnInit {
 
     // Draw Ball
     if (this.model.ballstate.location.x != undefined || this.model.ballstate.location.y != undefined) {
-      let XR = this.model.ballstate.location.x / 1000;
-      let YR = this.model.ballstate.location.y / 1000;
+      let XR = this.model.ballstate.location.x;
+      let YR = this.model.ballstate.location.y;
       XR = this.scale_x(XR) + this.padding;
       YR = this.scale_y(YR) + this.padding;
       let dist = Math.sqrt(Math.pow(y - XR, 2) + Math.pow(x - YR, 2));
@@ -348,8 +348,8 @@ export class FieldComponent implements OnInit {
   }
 
   drawBall(x, y) {
-    let newX = this.scale_x(x / 1000)
-    let newY = this.scale_y(y / 1000)
+    let newX = this.scale_x(x)
+    let newY = this.scale_y(y)
     this.fieldContext.beginPath();
     this.fieldContext.lineWidth = this.fieldConfig.thickness * this.scale;
     this.fieldContext.strokeStyle = 'red';
@@ -367,8 +367,8 @@ export class FieldComponent implements OnInit {
 
   drawRobot(id, color, rotateAngle, x, y) {
     var angle = rotateAngle - Math.PI / 2;
-    x = this.scale_x(x / 1000)
-    y = this.scale_y(y / 1000)
+    x = this.scale_x(x)
+    y = this.scale_y(y)
 
     this.fieldContext.beginPath();
     this.fieldContext.lineWidth = this.fieldConfig.thickness * this.scale;
