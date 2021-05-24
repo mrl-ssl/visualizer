@@ -286,7 +286,7 @@ export class FieldComponent implements OnInit {
     let OG_y_4 = this.scale_y(this.fieldConfig.ourgoalright.y);
     this.fieldContext.beginPath();
     this.fieldContext.lineWidth = this.fieldConfig.thickness * this.scale;
-    this.fieldContext.strokeStyle = 'white';
+    this.fieldContext.strokeStyle = 'red';
     this.fieldContext.moveTo(OG_y_1 + this.padding, OG_x_1 + this.padding);
     this.fieldContext.lineTo(OG_y_2 + this.padding, OG_x_2 + this.padding);
     this.fieldContext.lineTo(OG_y_3 + this.padding, OG_x_3 + this.padding);
