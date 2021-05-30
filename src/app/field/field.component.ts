@@ -382,7 +382,7 @@ export class FieldComponent implements OnInit {
     this.fieldContext.arc(
       y + this.padding,
       x + this.padding,
-      0.13 * this.scale,
+      0.09 * this.scale,
       -angle - (Math.PI / 4.0),
       Math.PI - angle + (Math.PI / 4.0),
       false
@@ -408,10 +408,10 @@ export class FieldComponent implements OnInit {
     }
     this.fieldContext.stroke();
 
-    let y1 = y + this.padding + (0.13 * this.scale) * Math.cos(-angle - Math.PI / 4);
-    let x1 = x + this.padding + (0.13 * this.scale) * Math.sin(-angle - Math.PI / 4);
-    let y2 = y + this.padding + (0.13 * this.scale) * Math.cos(Math.PI - angle + Math.PI / 4);
-    let x2 = x + this.padding + (0.13 * this.scale) * Math.sin(Math.PI - angle + Math.PI / 4);
+    let y1 = y + this.padding + (0.09 * this.scale) * Math.cos(-angle - Math.PI / 4);
+    let x1 = x + this.padding + (0.09 * this.scale) * Math.sin(-angle - Math.PI / 4);
+    let y2 = y + this.padding + (0.09 * this.scale) * Math.cos(Math.PI - angle + Math.PI / 4);
+    let x2 = x + this.padding + (0.09 * this.scale) * Math.sin(Math.PI - angle + Math.PI / 4);
     this.fieldContext.beginPath();
     this.fieldContext.lineCap = 'butt';
     this.fieldContext.moveTo(y1, x1);
